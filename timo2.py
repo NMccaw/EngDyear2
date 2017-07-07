@@ -83,7 +83,7 @@ def finite_element_1d(N_elements,q,L,E,nu,kappa,h,b):
     
      
     EI = [E*i for i in I]
-    
+
     
     # Even grid
     nodes, dx = np.linspace(0, L, N_elements+1, retstep=True)
@@ -122,8 +122,12 @@ def finite_element_1d(N_elements,q,L,E,nu,kappa,h,b):
             K[A,C] += np.dot(np.transpose(B),B) * kappa * h[e] * b[e] * G * dxdxi
     
     #Boundary Conditions
-    fixedNodeW = [0]
-    fixedNodeTheta = [0+N_elements+1]
+    #fixedNodeW = [0]
+    #fixedNodeTheta = [0+N_elements+1]
+    
+    # Boundary conditions- fixed at 0.25c
+    fixedNodeW = [int(N_elements/4)]
+    fixedNodeTheta = [int(N_elements/4) + N_elements+1]
     
     free_dof = np.delete(np.arange(0,2*(N_elements+1)),[fixedNodeW,fixedNodeTheta])
     

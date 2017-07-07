@@ -11,14 +11,15 @@ import csv
 import numpy as np
 from timo2 import BEMT_FEA_mesh_interp
 from timo2 import finite_element_1d
+from matplotlib import pyplot as plt
 
 N_elements_FEA = 1000
 L = 1
-
-simulation_directory = 'NACA0020_00deg/' 
+time = '3178' # 3178 ,2924
+simulation_directory = 'NACA0020_01deg/' 
 simulation_file_path = '/home/nicholas/Documents/Summer_Proj/Simulations/Examples/'
-path_to_pressure_lower = 'postProcessing/sampleDict/2924/surfaceProbesLower_p_k_omega.xy'
-path_to_pressure_upper = 'postProcessing/sampleDict/2924/surfaceProbesUpper_p_k_omega.xy'
+path_to_pressure_lower = 'postProcessing/sampleDict/'+ time + '/surfaceProbesLower_p_k_omega.xy'
+path_to_pressure_upper = 'postProcessing/sampleDict/'+ time +'/surfaceProbesUpper_p_k_omega.xy'
 
 path = simulation_file_path + simulation_directory
 sys.path.insert(0,path)
@@ -47,15 +48,9 @@ for i in range(len(pressure_upper)):
     
 q_upper = BEMT_FEA_mesh_interp(N_elements_FEA,N_elements_BEMT,pressure_upper,L)
 q_lower = BEMT_FEA_mesh_interp(N_elements_FEA,N_elements_BEMT,pressure_lower,L)
-q = q_upper+q_lower
+q = q_upper - q_lower
 
-E = 5e6
-nu = 0.3
-kappa = 5/6
-h = 0.2
-b = 1
 
-#U,free_dof = finite_element_1d(N_elements_FEA,q,L,E,nu,kappa,h,b)
 up_points = []
 low_points = []
 keep_flag_up = 0
@@ -72,15 +67,79 @@ with open(path + 'system/sampleDict') as f:
             keep_flag_low = 1
             keep_flag_up = 0
 
-for line in up_points:
-    if line == ');':
-        up_points.remove(line)
+points_x_up = np.zeros_like(pressure_upper)
+points_y_up = np.zeros_like(points_x_up)
 
-for line in low_points:
-    if line == ');':
-        low_points.remove(line)
+
+for i,line in enumerate(up_points):
+    newline = ''
+    char_keep = ''
+    for letter in line:
+        if letter == '(' or letter == ')' or letter == ';' or letter == ');':
+            pass
+        else:
+            char_keep = letter
+        newline += str(char_keep) 
+    if newline.split() != []:
+        i -= 1
+        points_x_up[i] = float(newline.split()[0])
+        points_y_up[i] = float(newline.split()[1])
         
+points_x_low = np.zeros_like(pressure_upper)
+points_y_low = np.zeros_like(points_x_up)
 
+        
+for i,line in enumerate(low_points):
+    newline = ''
+    char_keep = ''
+    for letter in line:
+        if letter == '(' or letter == ')' or letter == ';' or letter == ');':
+            pass
+        else:
+            char_keep = letter
+        newline += str(char_keep) 
+    if newline.split() != []:
+        i -= 1
+        points_x_low[i] = float(newline.split()[0])
+        points_y_low[i] = float(newline.split()[1])
+        
+    
+    
+h = np.abs(points_y_low - points_y_up) + 0.000001
 
+h_fea = BEMT_FEA_mesh_interp(N_elements_FEA,N_elements_BEMT,h,L) 
 
+E = 67000e6
+nu = 0.3
+kappa = 5/6
 
+b = np.ones_like(h_fea) 
+U,free_dof = finite_element_1d(N_elements_FEA,-q,L,E,nu,kappa,h_fea,b)
+plt.plot(points_y_up)
+plt.plot(points_y_low) 
+plt.plot(np.linspace(0,300,num = 1000),(-q_upper/max(q_upper))+1 )   
+plt.plot(np.linspace(0,300,num = 1000),(q_lower/max(q_lower))-1 )  
+plt.title('Geometry and pressure fields')
+plt.savefig('geometry.eps')
+plt.figure(2)   
+plt.plot(free_dof[:N_elements_FEA],U[:N_elements_FEA])
+plt.title('Deflection of foil')
+plt.ylabel('Deflection (m)')
+plt.savefig('deflection.pdf')
+plt.figure(3)
+plt.plot(-q_upper,label = 'Upper surface')
+plt.plot(-q_lower,label = 'Lower surface')
+plt.legend()
+plt.title('-Pressure along foil')
+plt.ylabel('-Pressure (Pa)')
+plt.savefig('pressure_up_down.pdf')
+plt.figure(4)
+plt.plot(q)
+plt.title('combined pressure acting on foil')
+plt.ylabel('Pressure (Pa)')
+plt.savefig('cob_pressure.pdf')
+plt.figure(5)
+plt.plot(free_dof[N_elements_FEA:],U[N_elements_FEA:])
+plt.title('Rotation of foil')
+plt.ylabel('rotation (o)')
+plt.savefig('rotation.pdf')
