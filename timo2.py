@@ -122,12 +122,12 @@ def finite_element_1d(N_elements,q,L,E,nu,kappa,h,b):
             K[A,C] += np.dot(np.transpose(B),B) * kappa * h[e] * b[e] * G * dxdxi
     
     #Boundary Conditions
-    #fixedNodeW = [0]
-    #fixedNodeTheta = [0+N_elements+1]
+    fixedNodeW = [0]
+    fixedNodeTheta = [0+N_elements+1]
     
     # Boundary conditions- fixed at 0.25c
-    fixedNodeW = [int(N_elements/4)]
-    fixedNodeTheta = [int(N_elements/4) + N_elements+1]
+    #fixedNodeW = [int(N_elements/4)]
+    #fixedNodeTheta = [int(N_elements/4) + N_elements+1]
     
     free_dof = np.delete(np.arange(0,2*(N_elements+1)),[fixedNodeW,fixedNodeTheta])
     
@@ -267,8 +267,10 @@ def test_timoshenko_analytical(N_elements):
     q[:] = -500
     U,free_dof = finite_element_1d(N_elements,q,L,E,nu,kappa,h,b)
     plt.plot(free_dof[:N_elements],U[:N_elements])
-    plt.savefig('timo_test.pdf')
     
+    plt.savefig('timo_test.pdf')
+    plt.figure(2)
+    plt.plot(free_dof[:N_elements],U[N_elements:])
     return U[N_elements-1]
 if __name__ == '__main__':
     
@@ -289,7 +291,7 @@ if __name__ == '__main__':
     plt.ylabel('Error')
     plt.savefig('FEA_convergence.eps')
     '''
-    test_timoshenko_uniform_load_experiment()
+    #test_timoshenko_uniform_load_experiment()
     N_elements = 50
     q = test_timoshenko_analytical(N_elements)
     print(q)
