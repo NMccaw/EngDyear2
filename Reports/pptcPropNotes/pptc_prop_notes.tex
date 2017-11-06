@@ -8,15 +8,77 @@
 \usepackage{subcaption}
 \usepackage{geometry}
 \usepackage{listings}
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
 
+\lstdefinestyle{mystyle}{
+	backgroundcolor=\color{backcolour},   
+	commentstyle=\color{codegreen},
+	keywordstyle=\color{magenta},
+	numberstyle=\tiny\color{codegray},
+	stringstyle=\color{codepurple},
+	basicstyle=\footnotesize,
+	breakatwhitespace=false,         
+	breaklines=true,                 
+	captionpos=b,                    
+	keepspaces=true,                 
+	numbers=left,                    
+	numbersep=5pt,                  
+	showspaces=false,                
+	showstringspaces=false,
+	showtabs=false,                  
+	tabsize=2
+}
+
+\lstset{style=mystyle}
 \geometry{a4paper, portrait, margin=1.25in}
 \title{PPTC Prop Tutorial Notes}
 \author{Nicholas McCaw}
 \begin{document}
 	\maketitle
-	\section{Dimensions}
-	Dimensions are defined for each property. Particularly in the p, U, k and omega files in the 0 folder. The dimensionSet is set in a square bracket with 7 entries. Each entry is defines the unit. i.e [mass length time temp quantity current luminous]. The number inside the square bracket defines the order of the unit.
+	\section{Other Notes}
+	\subsection{Dimensions}
+	Dimensions are defined for each property. Particularly in the p, U, k and omega files in the 0 folder. The \textit{dimensionSet} is set in a square bracket with 7 entries. Each entry is defines the unit. i.e [mass length time temp quantity current luminous]. The number inside the square bracket defines the order of the unit.
 	
 	Example: U is m/s and will therefore be defined as [0 1 -1 0 0 0 0].
 	
+	\section{Mesh Generation}
+	\subsection{STL}
+	Initially the geometry file is defined as a .stp file. This is then converted to a STL file using the open source CAD software \textit{FreeCad}. It was then found the STL file was the wrong scale therefore it was reduced using \textit{meshlab}
+	
+	\subsection{blockMesh}
+	Background mesh is created using \textit{blockMesh}. Cell aspect ratios are defined to be 1:1 for snapping purposes. The mesh will be centred around the geometry so the bounding box can be found using:
+	
+	\begin{lstlisting}
+	surfaceCheck pptcPropeller.stl | grep -i 'bounding box'
+	Bounding box : (-0.571 -0.12496 -0.120703) (0.095 0.119743 0.12466)\end{lstlisting}
+	
+	This gives the coordinates of the geometry which the domain can be built around. 
+	
+	The domain is a cylinder with the geometry in the centre and the inlet 5D upstream, the outlet 10D downstream and diameter 5D were D is the propeller diameter. Four vertices are then established at the both the inlet and outlet to define the domain. An arc is then drawn between the points to create a circular base. The coordinates of the midpoints of the arcs are then determined by using the equation $x^2 + y^2 = r^2$ were r is the radius of the cylinder which is 5D. The 8 vertices are now defined as are the 8 midpoints to define the circle.
+	
+	Cells are then created by defining the outline of the domain, the number of cells in each direction and the grading. The outline is defined according to the right hand screw rule. The code in the \textit{blockMeshDict} file for this is:
+	\begin{lstlisting}
+	blocks
+	(
+		hex (3 7 4 0 2 6 5 1) (168 56 56) simpleGrading (1 1 1)
+	);\end{lstlisting}
+	
+	The number of cells in the x,y and z directions are chosen to as a balance between good geometry and mesh size. Note the number of cells in each direction is chosen to keep the cells as close to cubes as possible.  
+	
+	The boundaries of the domain are then defined using the vertices. The boundaries are: inlet, outlet and domain. This creates the simple background mesh using \textit{blockMesh}.
+	
+	\subsection{snappyHexMeshDict}
+	The \textit{blockMesh} is required to run \textit{snappyHexMesh}. \textit{snappyHexMesh} works in three stages:
+	\begin{enumerate}
+		\item cell splitting (castellated mesh).
+		\item snapping to the STL surface.
+		\item adding layers around the surface.
+	\end{enumerate}
+	\subsubsection{pre-definitions}
+	Some objects must be defined before the snappy can proceed. These are: the definition of the geometry (i.e. the STL file) and areas of change within the mesh whether it be refinement areas or areas of rotation. These areas are defined by setting the coordinate points and radii.
+	\subsubsection{castellatedMesh}
+	Firstly the geometry mesh must be created. This needs to be fine enough to encompass all the features of the geometry as the geometry will be built up like little bricks. This is done by generating an .eMesh file from the stl to extract the surface features. The \textit{surfaceFeatureExtract} command creates this feature.
 \end{document}
