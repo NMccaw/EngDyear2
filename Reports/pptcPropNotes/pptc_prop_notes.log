@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2017.10.13)  6 NOV 2017 17:30
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2017.11.7)  7 NOV 2017 12:01
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -339,7 +339,7 @@ LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <8> not available
 ) ) 
 Here is how much of TeX's memory you used:
  5396 strings out of 494953
- 78897 string characters out of 6180976
+ 78897 string characters out of 6180977
  169673 words of memory out of 5000000
  8626 multiletter control sequences out of 15000+600000
  9369 words of font info for 34 fonts, out of 8000000 for 9000
@@ -356,7 +356,7 @@ ublic/amsfonts/cm/cmr7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/am
 sfonts/cm/cmr8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/c
 m/cmsy8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmti1
 0.pfb>
-Output written on pptc_prop_notes.pdf (2 pages, 128004 bytes).
+Output written on pptc_prop_notes.pdf (2 pages, 129028 bytes).
 PDF statistics:
  55 PDF objects out of 1000 (max. 8388607)
  39 compressed objects within 1 object stream

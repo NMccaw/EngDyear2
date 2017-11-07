@@ -1,0 +1,71 @@
+\documentclass{article}
+\usepackage{parskip}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{amsmath}
+\usepackage{xcolor}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{geometry}
+\usepackage{listings}
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+	backgroundcolor=\color{backcolour},   
+	commentstyle=\color{codegreen},
+	keywordstyle=\color{magenta},
+	numberstyle=\tiny\color{codegray},
+	stringstyle=\color{codepurple},
+	basicstyle=\footnotesize,
+	breakatwhitespace=false,         
+	breaklines=true,                 
+	captionpos=b,                    
+	keepspaces=true,                 
+	numbers=left,                    
+	numbersep=5pt,                  
+	showspaces=false,                
+	showstringspaces=false,
+	showtabs=false,                  
+	tabsize=2
+}
+
+\lstset{style=mystyle}
+\geometry{a4paper, portrait, margin=1.25in}
+\title{Update Report- Week of 6/11/17}
+\author{Nicholas McCaw}
+\begin{document}
+	\maketitle
+	
+	\section{Aim and Objective for 1st 3 months}
+		The aim of the 1st 3 months of the PhD is to gain knowledge and experience of tools for modelling both fluid flow and structural vibration. This will be achieved by running an OpenFoam tutorial of a propeller and performing a literature review vibration modes and a review of OpenFoams structural vibration capabilities.
+		
+		
+		The aim will be achieved by achieving the following objectives:
+		\begin{enumerate}
+			\item Generate a mesh with a rotating propeller using snappyHexMesh
+			\item Run the CFD using several turbulence models
+			\item Compare results of the simulation with the report by Berg Propulsion
+			\item Recreate mesh using other software such as pointwise.
+			\item Perform a literature review of vibration modes and hydro-elasticity
+			\item Generate software in Python to investigate modes of vibration of a simple Timoshenko beam.
+			\item Extend the investigation to use OpenFoam as the structural solver.
+		\end{enumerate}
+	One of the reasons for completing the OpenFoam tutorial is to gain a deeper understanding of the operation of OpenFoam. This includes all the smaller details of the functions and scripts. Therefore the tutorial will be taken very slowly with a report containing details of functions and keywords, stating how and why they are used, will be written concurrently.
+	
+	\section{Work Completed}
+	The mesh for the propeller was generated using SnappyHexMesh. This is also able to be run in parallel. The mesh involved defining refinement zones and a cylindrical volume for rotation. The mesh was successfully generated and a report detailing the intricacies of the mesh generation is currently under construction.
+	
+	Moreover a meeting was held with Caroline Rose regarding routes to Chartership. This also included how to use the benefit of working at QinetiQ to gain business exposure. 
+	
+	Finally, as work is being undertaken at two sites and multiple projects are being undertaken in parallel, an effort has been taken to plan the projects well and plan the exchange of data between the two sites. This includes recording work been done which will also act as a log book for chartership.
+	
+	\section{Plan for the week}
+	
+	The OpenFoam tutorial will continue with the report been written up at each stage. Running the CFD will be started by the end of the week.
+	
+	The fundamentals of vibration will be reviewed with the outlook of writing code in Python. 
+	
+\end{document}
