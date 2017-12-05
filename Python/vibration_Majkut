@@ -1,0 +1,110 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Tue Nov 28 16:46:59 2017
+
+@author: nicholas
+"""
+
+import numpy as np
+import scipy as sc
+from matplotlib import pyplot as plt
+
+omega = 425.3
+N_elements = 100
+E = 2.1e11
+G = 8.1e10 
+rho = 7860 
+l = 1 
+t = 0.02 
+h = 0.03 #0.08
+kappa = 5/6
+Area = t*h
+I = h**3*t/12
+wn_flag = False
+wn = 0
+omega = 1
+
+    
+def f(omega):
+    a = (omega**2 * rho) / (kappa*G)
+    c = (G* kappa*Area)/(E*I)
+    b = (rho * omega**2)/E - c
+    
+    d = a+b+c
+    e = a*b
+    
+    
+    delta = d**2 - 4*e
+    lambda_1 = (-d + np.sqrt(delta))/2
+    lambda_2 = (d + np.sqrt(delta))/2
+    
+    A = np.zeros((4,4))
+    if omega < np.sqrt(G*kappa*Area/(rho*I)):
+        A[0,0] = 1
+        A[0,1] = 0
+        A[0,2] = 1
+        A[0,3] = 0
+        
+        A[1,0] = 0
+        A[1,1] = np.sqrt(lambda_1)*(lambda_1 + a+ c)
+        A[1,2] = 0
+        A[1,3] = np.sqrt(lambda_2)*(-lambda_2 + a+ c)
+        
+        A[2,0] = (lambda_1 - d)*np.sqrt(lambda_1)*np.sinh(np.sqrt(lambda_1)*l)
+        A[2,1] = (lambda_1 - d)*np.sqrt(lambda_1)*np.cosh(np.sqrt(lambda_1)*l)
+        A[2,2] = (lambda_2 + d)*np.sqrt(lambda_2)*np.sin(np.sqrt(lambda_2)*l)
+        A[2,3] = (-lambda_2 - d)*np.sqrt(lambda_2)*np.cos(np.sqrt(lambda_2)*l)
+        
+        A[3,0] = (lambda_1 + a)*np.cosh(np.sqrt(lambda_1)*l)
+        A[3,1] = (lambda_1 + a)*np.sinh(np.sqrt(lambda_1)*l)
+        A[3,2] = (-lambda_2 + a)*np.cos(np.sqrt(lambda_2)*l)
+        A[3,3] = (-lambda_2 + a)*np.sin(np.sqrt(lambda_1)*l)
+        
+    if omega > np.sqrt(G*kappa*Area/(rho*I)):
+        A[0,0] = 1
+        A[0,1] = 0
+        A[0,2] = 1
+        A[0,3] = 0
+        
+        A[1,0] = 0
+        A[1,1] = np.sqrt(lambda_1)*(-lambda_1 + a+ c)
+        A[1,2] = 0
+        A[1,3] = np.sqrt(lambda_2)*(-lambda_2 + a+ c)
+        
+        A[2,0] = (lambda_1 + d)*np.sqrt(lambda_1)*np.sin(np.sqrt(lambda_1)*l)
+        A[2,1] = (-lambda_1 - d)*np.sqrt(lambda_1)*np.cos(np.sqrt(lambda_1)*l)
+        A[2,2] = (lambda_2 + d)*np.sqrt(lambda_2)*np.sin(np.sqrt(lambda_2)*l)
+        A[2,3] = (-lambda_2 -d)*np.sqrt(lambda_2)*np.cos(np.sqrt(lambda_2)*l)
+        
+        A[3,0] = (-lambda_1 + a)*np.cos(np.sqrt(lambda_1)*l)
+        A[3,1] = (-lambda_1 + a)*np.sin(np.sqrt(lambda_1)*l)
+        A[3,2] = (-lambda_2 + a)*np.cos(np.sqrt(lambda_2)*l)
+        A[3,3] = (-lambda_2 + a)*np.sin(np.sqrt(lambda_1)*l)
+    
+    
+    detA = np.linalg.det(A)
+    return detA
+omega1 = 400
+omega2 = 1000
+omega3 = 2500
+omega4 = 5000
+omega5 = 10000
+#omega = omega1
+
+
+omega = [omega1, omega2,omega3,omega4,omega5]
+wn2 = np.zeros_like(omega)
+for i,omega_guess in enumerate(omega):
+    sol = sc.optimize.root(f,omega_guess,tol = 1e-16)
+    wn2[i] = sol.x
+print(wn2)
+
+plot_wn = np.linspace(0,20000,20000)
+plot_detA = np.zeros_like(plot_wn)
+for i,j in enumerate(plot_wn):
+    plot_detA[i] = f(j)
+plt.plot(plot_wn,plot_detA)
+
+test = f(2656.8)
+print(test)
