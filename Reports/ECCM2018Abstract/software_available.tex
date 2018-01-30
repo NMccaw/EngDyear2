@@ -1,0 +1,33 @@
+\documentclass{article}
+\usepackage{fullpage}
+\usepackage{layout}
+\usepackage{parskip}
+\title{Review of structural solver possibilities}
+\begin{document}
+	\maketitle
+	\section{Commercial Software}
+	Commercial structural solvers available are:
+	\begin{itemize}
+		\item ABAQUS
+		\item ANSYS
+	\end{itemize} 
+
+	These can be coupled to Openfoam using MpCCI CouplingEnvironment (Mesh-based parallel Code Coupling Interface). This seems simple enough to do by looking at the MpCCI documentation. There is a MpCCI mesh morpher, also can use OpenFOAMs morpher (dynamicMeshDict). MpCCI requires a licence,which is available for research. Not sure about using it for QinetiQ purposes. 
+	
+	Another method of coupling is by using the Simulia Co-simulation Engine (CSE). This has been used by Marimon 2017 to couple Star-CCM+ with ABAQUS. There is little literature on coupling with OpenFOAM.	This seems to be used for commercial CFD codes only.
+	
+	Some testing is needed however I can see no reason why I cannot couple ABAQUS and OpenFOAM using MPCCI. The updates to geometry occur by morphing the mesh as apposed to writing to files which should therefore be much more efficient. Strong coupling is available as is moving meshes and moving reference frames.
+	
+	\section{OpenSource Software}
+	
+	First option is to use the structural solvers in OpenFOAM. This uses the finite volume method. 
+	
+	
+	DOLFIN-OLM project aims at simulating coupled PDEs on non-aligned / overlapping meshes.
+	The interface coupling is realized by Nitsche's method/discontinuous Galerkin. DOLFIN-OLM will implement types of background mesh method for simulation of fluid-structure interaction (FSI) with large deformation.
+	
+	
+	\section{OpenFOAM}
+	
+	Benchmark case for FSI in openfoam has been conducted by Habchi et al 2013 and Oliver 2009. Consists of a square bluff body with a cantilever beam behind it. The elastic cantilever beam is excited by the vortex shedding. It would be useful to model this in OpenFOAM also.
+\end{document}

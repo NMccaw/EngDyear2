@@ -1,0 +1,32 @@
+\begin{thebibliography}{1}
+
+\bibitem{Brooks1980}
+Emmert Brooks.
+\newblock {Vibration of a Marine Propeller in Non-Uniform flow}.
+\newblock 1980.
+
+\bibitem{Aksenov2004}
+Andrey Aksenov, Alexander Dyadkin, T~Luniewski, and Victor Pokhilko.
+\newblock {Fluid Structure Interaction analysis using Abaqus and FlowVision}.
+\newblock {\em Abaqus User Conference}, (March):1--9, 2004.
+
+\bibitem{Chae2017}
+Eun~Jung Chae, Deniz~Tolga Akcabay, and Yin~Lu Young.
+\newblock {Influence of flow-induced bend–twist coupling on the natural
+  vibration responses of flexible hydrofoils}.
+\newblock {\em Journal of Fluids and Structures}, 69(January):323--340, 2017.
+
+\bibitem{Ramberg1935}
+W~Ramberg, P~S Ballif, and M~J West.
+\newblock {A method for determining stresses in a non-rotating propeller blade
+  vibrating with a natural frequency}.
+\newblock {\em J. Res. Nat. Bureau Standards}, 14:189--215, 1935.
+
+\bibitem{Chen2017}
+Y.~Chen, L.~Wang, and H.~X. Hua.
+\newblock {Longitudinal vibration of marine propeller-shafting system induced
+  by inflow turbulence}.
+\newblock {\em Journal of Fluids and Structures}, 68(April 2016):264--278,
+  2017.
+
+\end{thebibliography}

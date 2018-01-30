@@ -1,0 +1,38 @@
+\documentclass[12pt]{eccm-ecfd_abstract}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\bibliographystyle{unsrt}
+\usepackage{graphicx}
+\usepackage{float}
+%\usepackage{amsmath}
+%\usepackage{amsfonts}
+%\usepackage{amssymb}
+
+
+\title{An Investigation of Fluid Structure Interaction of Marine Propellers }
+
+\author{Nicholas J. McCaw$^{1}$, }
+
+\address{$^{1}$ University of Southampton, United Kingdom, n.mccaw@soton.ac.uk}
+
+\begin{document}
+
+\noindent {\bf Keywords}: {\it CFD, Structures,Fluid-structure interaction, frequency analysis, Computing Methods}
+\vskip0.5cm
+
+Computing the effect of propeller deformation has been of interest since the early 1980s \cite{Brooks1980}. Numerous studies have been conducted to compute the deformation of propeller blades \cite{Aksenov2004},\cite{Chae2017}. Moreover, efforts have been made to study the natural frequency foils and marine propellers \cite{Ramberg1935}, \cite{Chen2017}. However there is a gap in literature for a comprehensive numeric study on flow induced vibration of a marine propeller and design against the flow vibrations being close to the fundamental frequencies of the propeller. The aim of the project is to establish a process for designing marine propellers against natural frequency excitation using open source software. This paper describes the initial investigations to achieve this aim. The first stage is to establish an appropriate CFD model of the marine propeller. This is done by using the Potsdam propeller test case with the CFD results compared quantitatively to experimental studies as shown in figure \ref{fig: wake difference}. The second stage is to investigate the natural frequencies of the propeller. This is initially done by using commercial software to determine the natural frequencies of a foil in air and in water. The frequency analysis of the foil is then performed using OpenFoam with the commercial software used as a verification case. Initial results show that the CFD results match well with the experimental results, with significant refinement around the blade tips due to vortices.          
+
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.5\linewidth]{{Velocities_0.094D_0.cvsgraph}.pdf}
+	\caption{Comparison of axial velocities in wake at 0.094D downstream of propeller and radial position of 0.4R between CFD and experimental data. Where R is the propeller radius and D is the propeller diameter. The x = r = 0 position as at the centre of the hub at the mid point of the blade.}
+	\label{fig: wake difference}
+\end{figure}
+
+\bibliography{/home/nicholas/Documents/EngD.bib}
+
+
+\end{document}
+
+
